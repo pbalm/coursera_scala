@@ -19,6 +19,7 @@ object TweetReader {
       }
 
     def getTweetData(user: String, json: String): List[Tweet] = {
+      println("Parsing: " + user)
       // is list
       val l = getList[Map[String, Any]](json)
       for (map <- l) yield {
@@ -72,7 +73,12 @@ object TweetReader {
 
   private def unionOfAllTweetSets(curSets: List[TweetSet], acc: TweetSet): TweetSet =
     if (curSets.isEmpty) acc
-    else unionOfAllTweetSets(curSets.tail, acc.union(curSets.head))
+    else {
+      println("Combining in one set...")
+      val c = unionOfAllTweetSets(curSets.tail, acc.union(curSets.head))
+      println("Done combining in one set")
+      c
+    }
 
   val allTweets: TweetSet = unionOfAllTweetSets(tweetSets, new Empty)
 }

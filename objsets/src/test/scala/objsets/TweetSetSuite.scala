@@ -9,13 +9,13 @@ import org.scalatest.junit.JUnitRunner
 class TweetSetSuite extends FunSuite {
   trait TestSets {
     val set1 = new Empty
-    val set2 = set1.incl(new Tweet("a", "a body", 20))
-    val set3 = set2.incl(new Tweet("b", "b body", 20))
+    val set2 = set1.incl(new Tweet("a", "a body", 20)) // [a]
+    val set3 = set2.incl(new Tweet("b", "b body", 20)) // [a, b]
     val c = new Tweet("c", "c body", 7)
     val d = new Tweet("d", "d body", 9)
-    val set4c = set3.incl(c)
-    val set4d = set3.incl(d)
-    val set5 = set4c.incl(d)
+    val set4c = set3.incl(c) // [a, b, c]
+    val set4d = set3.incl(d) // [a, b, d]
+    val set5 = set4c.incl(d) // [a, b, c, d]
   }
 
   def asSet(tweets: TweetSet): Set[Tweet] = {
@@ -61,12 +61,42 @@ class TweetSetSuite extends FunSuite {
       assert(size(set1.union(set5)) === 4)
     }
   }
+  
+  test("most retweeted") {
+    new TestSets {
+      intercept[NoSuchElementException] {
+        set1.mostRetweeted
+      }
+      
+      assert(set4c.mostRetweeted.user == "b")
+      assert(set1.incl(c).incl(d).mostRetweeted.user == "d")
+    }
+  }
+
+  test("least retweeted") {
+    new TestSets {
+      intercept[NoSuchElementException] {
+        set1.mostRetweeted
+      }
+      
+      assert(set4c.leastRetweeted.user == "c", "set 4c: " +  set4c.leastRetweeted)
+      assert(set1.incl(c).incl(d).leastRetweeted.user == "c", "set [c,d]")
+    }
+  }
 
   test("descending: set5") {
     new TestSets {
       val trends = set5.descendingByRetweet
-      assert(!trends.isEmpty)
-      assert(trends.head.user == "a" || trends.head.user == "b")
+      assert(!trends.isEmpty, "list is empty")
+      assert(trends.head.user == "a" || trends.head.user == "b", "user of first tweet is not a nor b")
+    }
+  }
+  
+  test("Tweet.matches") {
+    new TestSets {
+      assert(d.matchesKeywords(List("a", "bb", "body", "x")), "d matches body")
+      assert(d.matchesKeywords(List("d", "bb", "body", "x")), "d matches d")
+      assert(!d.matchesKeywords(List("a", "c", "x")), "d matches nothing: " + d.text)
     }
   }
 }
