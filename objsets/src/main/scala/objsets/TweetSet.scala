@@ -184,7 +184,7 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
   }
 
   def union(that: TweetSet) = {
-    unionAcc(this, that)
+    that.union(left).union(right).incl(elem)
   }
   
   def unionAcc(s: TweetSet, acc:TweetSet): TweetSet = {

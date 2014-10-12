@@ -1,1 +1,3 @@
 .cache
+target/
+lib_managed/

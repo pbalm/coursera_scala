@@ -8,11 +8,14 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class TweetSetSuite extends FunSuite {
   trait TestSets {
-    val set1 = new Empty
-    val set2 = set1.incl(new Tweet("a", "a body", 20)) // [a]
-    val set3 = set2.incl(new Tweet("b", "b body", 20)) // [a, b]
+    val a = new Tweet("a", "a body", 20)
+    val b = new Tweet("b", "b body", 20)
     val c = new Tweet("c", "c body", 7)
     val d = new Tweet("d", "d body", 9)
+    
+    val set1 = new Empty
+    val set2 = set1.incl(a) // [a]
+    val set3 = set2.incl(b) // [a, b]
     val set4c = set3.incl(c) // [a, b, c]
     val set4d = set3.incl(d) // [a, b, d]
     val set5 = set4c.incl(d) // [a, b, c, d]
@@ -47,6 +50,15 @@ class TweetSetSuite extends FunSuite {
   test("union: set4c and set4d") {
     new TestSets {
       assert(size(set4c.union(set4d)) === 4)
+    }
+  }
+
+  test("union: set not rooted at a but at c") {
+    new TestSets {
+      val setC = set1.incl(c).incl(d).incl(a)
+      val setB = set1.incl(b)
+      assert(size(setC.union(setB)) === 4)
+      assert(size(setB.union(setC)) === 4)
     }
   }
 

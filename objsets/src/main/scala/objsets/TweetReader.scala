@@ -74,7 +74,7 @@ object TweetReader {
   private def unionOfAllTweetSets(curSets: List[TweetSet], acc: TweetSet): TweetSet =
     if (curSets.isEmpty) acc
     else {
-      println("Combining in one set...")
+      println("Combining in one set: " + curSets.size + " to go ")
       val c = unionOfAllTweetSets(curSets.tail, acc.union(curSets.head))
       println("Done combining in one set")
       c
