@@ -29,6 +29,15 @@ class HuffmanSuite extends FunSuite {
   test("string2chars(\"hello, world\")") {
     assert(string2Chars("hello, world") === List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'))
   }
+  
+  test("times with hello world") {
+    val dict = times(List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd')).toMap
+    assert(dict('e') == 1)
+    assert(dict(' ') == 1)
+    assert(dict(',') == 1)
+    assert(dict('l') == 3)
+    assert(dict('o') == 2)
+  }
 
   test("makeOrderedLeafList for some frequency table") {
     assert(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))) === List(Leaf('e',1), Leaf('t',2), Leaf('x',3)))
