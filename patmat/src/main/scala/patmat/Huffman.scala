@@ -138,9 +138,11 @@ object Huffman {
 	    val first = trees.head
 	    val second = trees.tail.head
 	    val remainder = trees.tail.tail
+	    
 
 	    val forkChars = chars(first) ::: chars(second)
-	    val fork = Fork(first, second, forkChars, weight(first) + weight(second)) 
+	    val fork = if (weight(first) > weight(second)) Fork(first, second, forkChars, weight(first) + weight(second))
+	    else Fork(second, first, forkChars, weight(first) + weight(second))
 	    
 	    fork :: remainder
     }
