@@ -252,7 +252,7 @@ object Huffman {
     def encode(currentTree: CodeTree, remainingText: List[Char], output: List[Bit]): List[Bit] = {
       
       if (remainingText.isEmpty) {
-        output
+        return output
       }
       
       currentTree match {
