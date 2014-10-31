@@ -141,8 +141,10 @@ object Huffman {
 	    
 
 	    val forkChars = chars(first) ::: chars(second)
-	    val fork = if (weight(first) > weight(second)) Fork(first, second, forkChars, weight(first) + weight(second))
-	    else Fork(second, first, forkChars, weight(first) + weight(second))
+	    val fork = Fork(first, second, forkChars, weight(first) + weight(second))
+	    
+	    // The problem here is I'm just joining two trees at the top, by inserting one top-level fork-node that joins the two together.
+	    // This generally doesn't lead to an optimal tree.
 	    
 	    fork :: remainder
     }
