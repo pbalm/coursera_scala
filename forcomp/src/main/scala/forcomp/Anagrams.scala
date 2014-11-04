@@ -188,7 +188,6 @@ object Anagrams {
     val sentenceOccs = sentenceOccurrences(sentence)
     
     def anagrams(occs: Occurrences): List[Sentence] = {
-      //println(occs + " - " + occs.isEmpty)
       if (occs.isEmpty) {
         List(List())
       } else {
